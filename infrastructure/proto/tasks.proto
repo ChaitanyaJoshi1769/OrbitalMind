@@ -1,0 +1,102 @@
+syntax = "proto3";
+
+package orbitalmind.v1;
+
+// Task priority levels
+enum TaskPriority {
+  PRIORITY_UNSPECIFIED = 0;
+  CRITICAL = 1;
+  HIGH = 2;
+  NORMAL = 3;
+  LOW = 4;
+}
+
+// Task status enum
+enum TaskStatus {
+  STATUS_UNSPECIFIED = 0;
+  QUEUED = 1;
+  PROCESSING = 2;
+  COMPLETED = 3;
+  FAILED = 4;
+  CANCELLED = 5;
+}
+
+// Inference task for submission
+message InferenceTask {
+  string model_id = 1;
+  TaskPriority priority = 2;
+  bytes input_data = 3;
+  int32 timeout_ms = 4;
+  bool enable_redundancy = 5;
+  string request_id = 6;  // Optional: trace request back to source
+}
+
+// Task submission response
+message TaskSubmissionResponse {
+  string task_id = 1;
+  string model_id = 2;
+  TaskPriority priority = 3;
+  TaskStatus status = 4;
+  string assigned_satellite = 5;
+  int64 created_at = 6;
+  int64 estimated_completion_at = 7;
+}
+
+// Get task status request
+message TaskStatusRequest {
+  string task_id = 1;
+}
+
+// Task status response
+message TaskStatusResponse {
+  string task_id = 1;
+  string model_id = 2;
+  TaskPriority priority = 3;
+  TaskStatus status = 4;
+  string assigned_satellite = 5;
+  int32 progress_percent = 6;
+  int64 created_at = 7;
+  int64 updated_at = 8;
+  bytes result_data = 9;  // Only populated on COMPLETED
+  string error_message = 10;  // Only populated on FAILED
+}
+
+// Cancel task request
+message CancelTaskRequest {
+  string task_id = 1;
+}
+
+// List tasks request
+message ListTasksRequest {
+  string status_filter = 1;  // "all", "queued", "processing", "completed", "failed"
+  int32 limit = 2;
+  int32 offset = 3;
+}
+
+// List tasks response
+message ListTasksResponse {
+  repeated TaskStatusResponse tasks = 1;
+  int32 total = 2;
+  int32 queued = 3;
+  int32 processing = 4;
+  int32 completed = 5;
+  int32 failed = 6;
+}
+
+// Task service definition
+service TaskService {
+  // Submit inference task (returns 202 Accepted via gRPC)
+  rpc SubmitTask (InferenceTask) returns (TaskSubmissionResponse);
+
+  // Get task status
+  rpc GetTaskStatus (TaskStatusRequest) returns (TaskStatusResponse);
+
+  // Cancel task
+  rpc CancelTask (CancelTaskRequest) returns (TaskStatusResponse);
+
+  // List tasks with filtering
+  rpc ListTasks (ListTasksRequest) returns (ListTasksResponse);
+
+  // Stream task status updates
+  rpc StreamTaskStatus (TaskStatusRequest) returns (stream TaskStatusResponse);
+}

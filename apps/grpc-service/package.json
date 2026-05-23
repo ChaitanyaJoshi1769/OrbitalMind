@@ -1,0 +1,34 @@
+{
+  "name": "@orbitalmind/grpc-service",
+  "version": "1.0.0",
+  "description": "gRPC service endpoints for OrbitalMind control plane",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc && npm run proto:compile",
+    "proto:compile": "grpc_tools_node_protoc --js_out=grpc_js:dist --grpc_out=grpc_js:dist --plugin=protoc-gen-grpc=./node_modules/.bin/grpc_tools_node_protoc_plugin infrastructure/proto/*.proto",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "lint": "eslint src --ext .ts",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write src"
+  },
+  "dependencies": {
+    "@orbitalmind/shared": "workspace:*",
+    "@grpc/grpc-js": "^1.10.0",
+    "pino": "^8.16.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.2.0",
+    "tsx": "^4.6.0",
+    "@grpc/proto-loader": "^0.7.0",
+    "grpc-tools": "^1.12.4",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0"
+  }
+}

@@ -1,0 +1,154 @@
+syntax = "proto3";
+
+package orbitalmind.v1;
+
+// Satellite position in geographic coordinates
+message Position {
+  double latitude = 1;
+  double longitude = 2;
+  double altitude = 3;  // km
+}
+
+// Velocity vector in ECI coordinates
+message Velocity {
+  double x = 1;  // km/s
+  double y = 2;  // km/s
+  double z = 3;  // km/s
+}
+
+// Health status enum
+enum HealthStatus {
+  HEALTH_STATUS_UNSPECIFIED = 0;
+  HEALTHY = 1;
+  DEGRADED = 2;
+  OFFLINE = 3;
+}
+
+// Health metrics
+message Health {
+  HealthStatus status = 1;
+  double uptime = 2;  // seconds
+}
+
+// Thermal system state
+message ThermalState {
+  double junction_temperature = 1;  // Celsius
+  double power_dissipation = 2;      // Watts
+  double ambient_temperature = 3;    // Celsius
+}
+
+// Radiation environment tracking
+message RadiationState {
+  int32 seu_rate_24h = 1;   // Single Event Upsets per 24 hours
+  int64 last_event = 2;     // Timestamp of last SEU event
+}
+
+// Power system state
+message PowerState {
+  double battery_level = 1;   // Percentage (0-100)
+  double solar_input = 2;     // Watts
+}
+
+// Inference system state
+message InferenceState {
+  int32 queued = 1;      // Queued tasks
+  int32 processing = 2;  // Processing tasks
+  int32 completed = 3;   // Completed tasks
+}
+
+// Complete satellite state
+message Satellite {
+  string id = 1;
+  Position position = 2;
+  Velocity velocity = 3;
+  Health health = 4;
+  ThermalState thermal = 5;
+  RadiationState radiation = 6;
+  PowerState power = 7;
+  InferenceState inference = 8;
+}
+
+// Network topology edge
+message TopologyEdge {
+  string source = 1;
+  string destination = 2;
+  double quality = 3;  // 0.0 to 1.0
+}
+
+// Network topology
+message NetworkTopology {
+  repeated TopologyEdge edges = 1;
+}
+
+// Routing entry
+message RoutingEntry {
+  string destination = 1;
+  string next_hop = 2;
+  double link_quality = 3;
+}
+
+// Complete constellation state
+message ConstellationState {
+  int64 timestamp = 1;
+  repeated Satellite satellites = 2;
+  NetworkTopology topology = 3;
+  map<string, RoutingEntry> routing = 4;
+}
+
+// Request for satellite information
+message SatelliteRequest {
+  string satellite_id = 1;
+}
+
+// Response with satellite details
+message SatelliteResponse {
+  Satellite satellite = 1;
+}
+
+// List of satellites request
+message SatellitesListRequest {
+  string health_filter = 1;  // "all", "healthy", "degraded", "offline"
+}
+
+// Response with list of satellites
+message SatellitesListResponse {
+  repeated Satellite satellites = 1;
+  int32 total = 2;
+  int32 healthy = 3;
+  int32 degraded = 4;
+  int32 offline = 5;
+}
+
+// Request for constellation state
+message ConstellationStateRequest {}
+
+// Response with full constellation state
+message ConstellationStateResponse {
+  ConstellationState state = 1;
+}
+
+// Update constellation state request
+message UpdateConstellationRequest {
+  ConstellationState state = 1;
+}
+
+// Generic response
+message Empty {}
+
+// Constellation service definition
+service ConstellationService {
+  // Get single satellite
+  rpc GetSatellite (SatelliteRequest) returns (SatelliteResponse);
+
+  // List all satellites with optional filtering
+  rpc ListSatellites (SatellitesListRequest) returns (SatellitesListResponse);
+
+  // Get complete constellation state
+  rpc GetConstellationState (ConstellationStateRequest) returns (ConstellationStateResponse);
+
+  // Update constellation state
+  rpc UpdateConstellationState (UpdateConstellationRequest) returns (Empty);
+
+  // Stream constellation state updates (server push)
+  rpc StreamConstellationState (ConstellationStateRequest) returns (stream ConstellationStateResponse);
+}

@@ -1,0 +1,164 @@
+syntax = "proto3";
+
+package orbitalmind.v1;
+
+// Thermal metrics
+message ThermalMetrics {
+  double average_temperature = 1;
+  double max_temperature = 2;
+  double min_temperature = 3;
+  int32 satellite_count = 4;
+  int32 over_threshold_count = 5;  // > 75°C
+}
+
+// Thermal telemetry data
+message ThermalTelemetry {
+  int64 timestamp = 1;
+  ThermalMetrics aggregate = 2;
+  repeated SatelliteThermal satellites = 3;
+}
+
+// Per-satellite thermal data
+message SatelliteThermal {
+  string satellite_id = 1;
+  double junction_temperature = 2;
+  double power_dissipation = 3;
+  double ambient_temperature = 4;
+  string status = 5;
+}
+
+// Radiation metrics
+message RadiationMetrics {
+  int32 total_seu_events_24h = 1;
+  double average_seu_rate = 2;
+  int32 max_seu_rate = 3;
+  int32 satellite_count = 4;
+  int32 high_risk_count = 5;  // > 100 SEU/24h
+}
+
+// Radiation telemetry data
+message RadiationTelemetry {
+  int64 timestamp = 1;
+  RadiationMetrics aggregate = 2;
+  repeated SatelliteRadiation satellites = 3;
+}
+
+// Per-satellite radiation data
+message SatelliteRadiation {
+  string satellite_id = 1;
+  int32 seu_rate_24h = 2;
+  int64 last_event_time = 3;
+}
+
+// Power metrics
+message PowerMetrics {
+  double average_battery_level = 1;
+  double min_battery_level = 2;
+  double average_solar_input = 3;
+  int32 satellite_count = 4;
+  int32 low_battery_count = 5;  // < 20%
+}
+
+// Power telemetry data
+message PowerTelemetry {
+  int64 timestamp = 1;
+  PowerMetrics aggregate = 2;
+  repeated SatellitePower satellites = 3;
+}
+
+// Per-satellite power data
+message SatellitePower {
+  string satellite_id = 1;
+  double battery_level = 2;
+  double solar_input = 3;
+  string status = 4;
+}
+
+// Inference metrics
+message InferenceMetrics {
+  int32 total_queued = 1;
+  int32 total_processing = 2;
+  int32 total_completed = 3;
+  int32 total_throughput = 4;
+  int32 satellite_count = 5;
+}
+
+// Inference telemetry data
+message InferenceTelemetry {
+  int64 timestamp = 1;
+  InferenceMetrics aggregate = 2;
+  repeated SatelliteInference satellites = 3;
+}
+
+// Per-satellite inference data
+message SatelliteInference {
+  string satellite_id = 1;
+  int32 queued = 2;
+  int32 processing = 3;
+  int32 completed = 4;
+}
+
+// Network metrics
+message NetworkMetrics {
+  int32 total_links = 1;
+  int32 healthy_links = 2;
+  double average_link_quality = 3;
+  double network_connectivity = 4;
+}
+
+// Network telemetry data
+message NetworkTelemetry {
+  int64 timestamp = 1;
+  NetworkMetrics aggregate = 2;
+  repeated NetworkLink links = 3;
+}
+
+// Network link data
+message NetworkLink {
+  string source = 1;
+  string destination = 2;
+  double quality = 3;
+  double latency_ms = 4;
+  double bandwidth_mbps = 5;
+}
+
+// Telemetry requests
+message ThermalMetricsRequest {}
+message RadiationMetricsRequest {}
+message PowerMetricsRequest {}
+message InferenceMetricsRequest {}
+message NetworkMetricsRequest {}
+
+// Generic empty request/response
+message Empty {}
+
+// Telemetry service definition
+service TelemetryService {
+  // Get thermal metrics
+  rpc GetThermalMetrics (ThermalMetricsRequest) returns (ThermalTelemetry);
+
+  // Get radiation metrics
+  rpc GetRadiationMetrics (RadiationMetricsRequest) returns (RadiationTelemetry);
+
+  // Get power metrics
+  rpc GetPowerMetrics (PowerMetricsRequest) returns (PowerTelemetry);
+
+  // Get inference metrics
+  rpc GetInferenceMetrics (InferenceMetricsRequest) returns (InferenceTelemetry);
+
+  // Get network metrics
+  rpc GetNetworkMetrics (NetworkMetricsRequest) returns (NetworkTelemetry);
+
+  // Stream all telemetry continuously
+  rpc StreamTelemetry (Empty) returns (stream TelemetrySnapshot);
+}
+
+// Combined telemetry snapshot for streaming
+message TelemetrySnapshot {
+  int64 timestamp = 1;
+  ThermalMetrics thermal = 2;
+  RadiationMetrics radiation = 3;
+  PowerMetrics power = 4;
+  InferenceMetrics inference = 5;
+  NetworkMetrics network = 6;
+}
