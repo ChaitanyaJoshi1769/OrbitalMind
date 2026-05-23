@@ -1,0 +1,29 @@
+{
+  "name": "@orbitalmind/edge-compute",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "jest",
+    "optimize": "ts-node src/cli/optimize-models.ts",
+    "benchmark": "ts-node src/cli/benchmark.ts",
+    "lint": "eslint src --ext .ts",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@orbitalmind/database": "workspace:*",
+    "@orbitalmind/shared": "workspace:*",
+    "onnx": "^1.15.0",
+    "onnxruntime": "^1.16.3",
+    "pino": "^8.16.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.0"
+  }
+}
