@@ -1,0 +1,17 @@
+{
+  "name": "@orbitalmind-apps/control-plane",
+  "version": "0.1.0",
+  "description": "OrbitalMind control-plane application",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'Development server for control-plane'",
+    "build": "echo 'Building control-plane'",
+    "start": "echo 'Starting control-plane'"
+  },
+  "dependencies": {
+    "@orbitalmind/shared": "workspace:*",
+    "@orbitalmind/thermal-engine": "workspace:*",
+    "@orbitalmind/radiation-runtime": "workspace:*",
+    "@orbitalmind/inference-runtime": "workspace:*"
+  }
+}

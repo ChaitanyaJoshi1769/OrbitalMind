@@ -1,0 +1,17 @@
+{
+  "name": "@orbitalmind-apps/orbital-runtime",
+  "version": "0.1.0",
+  "description": "OrbitalMind orbital-runtime application",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'Development server for orbital-runtime'",
+    "build": "echo 'Building orbital-runtime'",
+    "start": "echo 'Starting orbital-runtime'"
+  },
+  "dependencies": {
+    "@orbitalmind/shared": "workspace:*",
+    "@orbitalmind/thermal-engine": "workspace:*",
+    "@orbitalmind/radiation-runtime": "workspace:*",
+    "@orbitalmind/inference-runtime": "workspace:*"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@orbitalmind-apps/simulation-engine",
+  "version": "0.1.0",
+  "description": "OrbitalMind simulation-engine application",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'Development server for simulation-engine'",
+    "build": "echo 'Building simulation-engine'",
+    "start": "echo 'Starting simulation-engine'"
+  },
+  "dependencies": {
+    "@orbitalmind/shared": "workspace:*",
+    "@orbitalmind/thermal-engine": "workspace:*",
+    "@orbitalmind/radiation-runtime": "workspace:*",
+    "@orbitalmind/inference-runtime": "workspace:*"
+  }
+}

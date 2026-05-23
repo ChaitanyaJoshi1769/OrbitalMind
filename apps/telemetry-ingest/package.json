@@ -1,0 +1,17 @@
+{
+  "name": "@orbitalmind-apps/telemetry-ingest",
+  "version": "0.1.0",
+  "description": "OrbitalMind telemetry-ingest application",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'Development server for telemetry-ingest'",
+    "build": "echo 'Building telemetry-ingest'",
+    "start": "echo 'Starting telemetry-ingest'"
+  },
+  "dependencies": {
+    "@orbitalmind/shared": "workspace:*",
+    "@orbitalmind/thermal-engine": "workspace:*",
+    "@orbitalmind/radiation-runtime": "workspace:*",
+    "@orbitalmind/inference-runtime": "workspace:*"
+  }
+}

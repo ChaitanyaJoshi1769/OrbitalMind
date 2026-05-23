@@ -1,0 +1,17 @@
+{
+  "name": "@orbitalmind-apps/web",
+  "version": "0.1.0",
+  "description": "OrbitalMind web application",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'Development server for web'",
+    "build": "echo 'Building web'",
+    "start": "echo 'Starting web'"
+  },
+  "dependencies": {
+    "@orbitalmind/shared": "workspace:*",
+    "@orbitalmind/thermal-engine": "workspace:*",
+    "@orbitalmind/radiation-runtime": "workspace:*",
+    "@orbitalmind/inference-runtime": "workspace:*"
+  }
+}
