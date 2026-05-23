@@ -1,4 +1,5 @@
-// web application entry point
-// Implementation coming in Phase 2
+export { default as DashboardPage } from './app/page';
+export { default as RootLayout } from './app/layout';
 
-export const APP_NAME = 'web';
+// Re-export API routes
+export { GET as GET_ConstellationState } from './app/api/constellation/state/route';

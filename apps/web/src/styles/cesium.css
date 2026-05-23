@@ -1,0 +1,126 @@
+/* Cesium Viewer Customization */
+.cesium-widget {
+  font-family: 'Inter', sans-serif !important;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+.cesium-widget-credits {
+  display: none;
+}
+
+.cesium-viewer-cesiumWidgetContainer {
+  background: #0f172a;
+}
+
+/* Info Box */
+.cesium-infoBox {
+  background: rgba(15, 23, 42, 0.95) !important;
+  border: 1px solid #334155 !important;
+}
+
+.cesium-infoBox-title {
+  background: linear-gradient(90deg, #3b82f6, #1e40af) !important;
+  color: white !important;
+  font-weight: 600;
+}
+
+.cesium-infoBox-description {
+  color: #e2e8f0 !important;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Toolbar */
+.cesium-toolbar {
+  background: rgba(15, 23, 42, 0.8) !important;
+  border-bottom: 1px solid #334155 !important;
+}
+
+.cesium-toolbar button {
+  background: rgba(51, 65, 85, 0.5) !important;
+  border: 1px solid #475569 !important;
+  color: #e2e8f0 !important;
+  transition: all 0.2s;
+}
+
+.cesium-toolbar button:hover {
+  background: rgba(59, 130, 246, 0.3) !important;
+  border-color: #3b82f6 !important;
+}
+
+/* Geocoder */
+.cesium-geocoder-input {
+  background: rgba(51, 65, 85, 0.5) !important;
+  border: 1px solid #475569 !important;
+  color: #e2e8f0 !important;
+}
+
+.cesium-geocoder-input::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Search Result */
+.cesium-geocoder-search-results {
+  background: rgba(30, 41, 59, 0.95) !important;
+  border: 1px solid #334155 !important;
+}
+
+.cesium-geocoder-search-results li {
+  border-bottom: 1px solid #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+.cesium-geocoder-search-results li:hover {
+  background: rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Animation Controls */
+.cesium-animation-container {
+  background: rgba(15, 23, 42, 0.8) !important;
+  border-top: 1px solid #334155 !important;
+}
+
+.cesium-animation-controls button {
+  background: rgba(51, 65, 85, 0.5) !important;
+  border: 1px solid #475569 !important;
+  color: #e2e8f0 !important;
+}
+
+/* Timeline */
+.cesium-timeline-container {
+  background: rgba(15, 23, 42, 0.8) !important;
+  border-top: 1px solid #334155 !important;
+}
+
+.cesium-timeline-track {
+  background: rgba(51, 65, 85, 0.3) !important;
+}
+
+/* Labels and Text */
+.cesium-label {
+  font-family: 'Inter', monospace !important;
+  font-size: 12px;
+}
+
+/* Entity Visualization */
+.cesium-entity-point {
+  filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.4));
+}
+
+.cesium-entity-polyline {
+  stroke-width: 2px;
+  opacity: 0.8;
+}
+
+/* Status Icons */
+.status-healthy {
+  filter: drop-shadow(0 0 2px rgba(34, 197, 94, 0.6));
+}
+
+.status-degraded {
+  filter: drop-shadow(0 0 2px rgba(234, 179, 8, 0.6));
+}
+
+.status-offline {
+  filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.6));
+}
