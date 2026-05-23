@@ -1,17 +1,20 @@
 {
   "name": "@orbitalmind-apps/simulation-engine",
   "version": "0.1.0",
-  "description": "OrbitalMind simulation-engine application",
+  "description": "Orbital physics and thermal dynamics simulator",
   "private": true,
+  "main": "./src/index.ts",
   "scripts": {
-    "dev": "echo 'Development server for simulation-engine'",
-    "build": "echo 'Building simulation-engine'",
-    "start": "echo 'Starting simulation-engine'"
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@orbitalmind/shared": "workspace:*",
-    "@orbitalmind/thermal-engine": "workspace:*",
-    "@orbitalmind/radiation-runtime": "workspace:*",
-    "@orbitalmind/inference-runtime": "workspace:*"
+    "@orbitalmind/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2"
   }
 }
