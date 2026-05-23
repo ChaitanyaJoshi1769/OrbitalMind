@@ -1,0 +1,38 @@
+{
+  "name": "@orbital-mind/science-ops",
+  "version": "1.0.0",
+  "description": "Autonomous science operations with self-directed observations",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "jest",
+    "lint": "eslint src/**/*.ts"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "pino": "^8.14.1",
+    "pino-pretty": "^10.2.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.3.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "@typescript-eslint/parser": "^5.59.8",
+    "eslint": "^8.44.0",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "tsx": "^3.12.7",
+    "typescript": "^5.3.3"
+  },
+  "keywords": [
+    "science-operations",
+    "satellite",
+    "autonomous",
+    "observation",
+    "data-analysis"
+  ],
+  "author": "OrbitalMind",
+  "license": "MIT"
+}
