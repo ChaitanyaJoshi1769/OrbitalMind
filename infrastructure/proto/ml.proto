@@ -1,0 +1,156 @@
+syntax = "proto3";
+
+package ml;
+
+/**
+ * ML service definitions for thermal prediction, anomaly detection, and optimization
+ */
+
+message Position {
+  double latitude = 1;
+  double longitude = 2;
+  double altitude = 3;
+}
+
+message PredictionPoint {
+  string timestamp = 1;
+  double junction_temperature = 2;
+  double confidence = 3;
+  double power_dissipation = 4;
+  double ambient_temperature = 5;
+}
+
+message ThermalPredictionRequest {
+  string satellite_id = 1;
+  int32 prediction_horizon = 2; // minutes
+  bool include_confidence = 3;
+  bool include_aggregates = 4;
+}
+
+message ThermalPredictionResponse {
+  string satellite_id = 1;
+  repeated PredictionPoint predictions = 2;
+  double anomaly_risk = 3;
+  string recommended_action = 4;
+  double max_predicted_temperature = 5;
+  double avg_predicted_temperature = 6;
+}
+
+message BatchPredictionRequest {
+  repeated string satellite_ids = 1;
+  int32 prediction_horizon = 2;
+  bool include_confidence = 3;
+}
+
+message BatchPredictionResponse {
+  string request_id = 1;
+  string status = 2; // queued, processing, completed
+  int32 progress = 3;
+  repeated ThermalPredictionResponse predictions = 4;
+}
+
+message AnomalyDetectionRequest {
+  repeated string satellite_ids = 1;
+  string detection_method = 2; // isolation_forest, vae, hybrid
+  int32 lookback_window = 3; // hours
+}
+
+enum Severity {
+  LOW = 0;
+  MEDIUM = 1;
+  HIGH = 2;
+  CRITICAL = 3;
+}
+
+message AnomalyResult {
+  string satellite_id = 1;
+  double anomaly_score = 2; // 0-1
+  string anomaly_type = 3;
+  Severity severity = 4;
+  string description = 5;
+  repeated string correlated_satellites = 6;
+}
+
+message AnomalyDetectionResponse {
+  string request_id = 1;
+  repeated AnomalyResult results = 2;
+  int32 num_anomalies_detected = 3;
+}
+
+message AllocationPoint {
+  string satellite_id = 1;
+  double allocation = 2; // 0-1
+}
+
+message OptimizationRecommendation {
+  string strategy = 1; // POWER_AWARE, THERMAL_AWARE, etc.
+  repeated AllocationPoint allocations = 2;
+  double expected_thermal_reduction = 3; // Celsius
+  double expected_power_improvement = 4; // percentage
+  repeated string target_satellites = 5;
+}
+
+message OptimizationRequest {
+  string constellation_id = 1;
+  string target_metric = 2; // thermal, power, network, hybrid
+  int32 optimization_horizon = 3; // minutes
+  bool include_feasibility_check = 4;
+}
+
+message OptimizationResponse {
+  string request_id = 1;
+  OptimizationRecommendation recommendation = 2;
+  double feasibility_score = 3; // 0-1
+  string implementation_notes = 4;
+}
+
+message ModelMetrics {
+  string model_name = 1;
+  string version = 2;
+  double accuracy = 3;
+  double rmse = 4;
+  int32 parameters = 5;
+  double inference_time_ms = 6;
+  string status = 7;
+}
+
+message ModelStatusRequest {
+  bool include_metrics = 1;
+}
+
+message ModelStatusResponse {
+  repeated ModelMetrics models = 1;
+  string last_update = 2;
+  bool all_healthy = 3;
+}
+
+message PredictionHistoryRequest {
+  string satellite_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+
+message HistoricalPrediction {
+  string timestamp = 1;
+  double predicted = 2;
+  double actual = 3;
+  double error = 4;
+}
+
+message PredictionHistoryResponse {
+  string satellite_id = 1;
+  repeated HistoricalPrediction predictions = 2;
+  int32 total = 3;
+  double mean_absolute_error = 4;
+}
+
+// ML Service Definition
+service MLService {
+  rpc PredictThermal(ThermalPredictionRequest) returns (ThermalPredictionResponse);
+  rpc PredictThermalBatch(BatchPredictionRequest) returns (stream BatchPredictionResponse);
+  rpc DetectAnomalies(AnomalyDetectionRequest) returns (AnomalyDetectionResponse);
+  rpc OptimizeAllocation(OptimizationRequest) returns (OptimizationResponse);
+  rpc GetModelStatus(ModelStatusRequest) returns (ModelStatusResponse);
+  rpc GetPredictionHistory(PredictionHistoryRequest) returns (PredictionHistoryResponse);
+  rpc StreamPredictions(ThermalPredictionRequest) returns (stream ThermalPredictionResponse);
+}
