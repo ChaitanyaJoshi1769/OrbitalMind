@@ -1,2 +1,1 @@
-// Placeholder - implementation coming in Phase 2
-export {};
+export { NetworkManager, GossipProtocol, LinkQuality } from './network-manager';

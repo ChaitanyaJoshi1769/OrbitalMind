@@ -1,2 +1,1 @@
-// Placeholder - implementation coming in Phase 2
-export {};
+export { AutonomyEngine, AdaptiveAutonomyController, AutonomyState, NavigationPlan, CollisionAvoidanceDecision, OperatingMode, MissionStatus } from './autonomy-engine';
