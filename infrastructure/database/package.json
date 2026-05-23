@@ -1,0 +1,24 @@
+{
+  "name": "@orbitalmind/database",
+  "version": "1.0.0",
+  "description": "Database layer for OrbitalMind with PostgreSQL and TimescaleDB",
+  "private": true,
+  "main": "dist/service.js",
+  "types": "dist/service.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "migrate": "typeorm migration:run -d src/database.ts",
+    "migrate:create": "typeorm migration:create src/database/migrations/$npm_config_name",
+    "migrate:revert": "typeorm migration:revert -d src/database.ts"
+  },
+  "dependencies": {
+    "typeorm": "^0.3.17",
+    "pg": "^8.11.0",
+    "reflect-metadata": "^0.1.13",
+    "pino": "^8.16.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.2.0"
+  }
+}
