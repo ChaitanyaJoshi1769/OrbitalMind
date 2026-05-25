@@ -1,0 +1,22 @@
+{
+  "name": "@orbitalmind/optimization-lib",
+  "version": "1.0.0",
+  "description": "Performance optimization library for OrbitalMind - spatial grid, Dijkstra optimization, caching, vectorization",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "keywords": [
+    "optimization",
+    "performance",
+    "spatial-grid",
+    "dijkstra",
+    "collision-detection",
+    "routing",
+    "vectorization"
+  ],
+  "author": "OrbitalMind",
+  "license": "MIT"
+}
