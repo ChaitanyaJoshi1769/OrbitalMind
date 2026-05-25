@@ -16,6 +16,7 @@
   "dependencies": {
     "@orbitalmind/database": "workspace:*",
     "@orbitalmind/shared": "workspace:*",
+    "@orbitalmind/optimization-lib": "workspace:*",
     "onnx": "^1.15.0",
     "onnxruntime": "^1.16.3",
     "pino": "^8.16.0",
