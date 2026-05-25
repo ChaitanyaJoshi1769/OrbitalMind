@@ -1,7 +1,7 @@
 /**
  * OrbitalMind Monitoring System
  *
- * Exports optimization monitoring, dashboard, and alerting capabilities
+ * Exports optimization monitoring, dashboard, alerting, and API capabilities
  */
 
 export { default as OptimizationMonitor } from './optimization-monitor';
@@ -33,3 +33,11 @@ export type {
   AlertNotificationHandler,
   AlertNotificationConfig,
 } from './alerting-system';
+
+export { default as MetricsCollector } from './metrics-collector';
+export type {
+  MetricBatch,
+  ServiceMetrics,
+} from './metrics-collector';
+
+export { default as MonitoringAPIServer } from './monitoring-api';
