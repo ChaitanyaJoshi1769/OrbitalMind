@@ -41,3 +41,8 @@ export type {
 } from './metrics-collector';
 
 export { default as MonitoringAPIServer } from './monitoring-api';
+
+export { default as MonitoringAPIClient, createMonitoringClient } from './api-client';
+export type {
+  ClientOptions,
+} from './api-client';
