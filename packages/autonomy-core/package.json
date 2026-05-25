@@ -11,10 +11,13 @@
     "clean": "rm -rf dist .tsbuildinfo"
   },
   "dependencies": {
-    "@orbitalmind/shared": "workspace:*"
+    "@orbitalmind/shared": "workspace:*",
+    "@orbitalmind/optimization-lib": "workspace:*",
+    "pino": "^8.14.1"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "pino-pretty": "^10.2.0"
   }
 }
