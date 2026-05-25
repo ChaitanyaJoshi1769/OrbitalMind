@@ -485,6 +485,155 @@ export class VectorizedFormationControl {
   }
 }
 
+/**
+ * Vectorized Image Analyzer
+ * Batch spectral and thermal analysis for remote sensing data
+ */
+export class VectorizedImageAnalyzer {
+  /**
+   * Calculate NDVI (Normalized Difference Vegetation Index) for all pixels
+   * Vectorized single-pass approach vs per-pixel loop
+   */
+  calculateNDVI(
+    nirBand: number[],
+    rBand: number[]
+  ): {
+    ndviValues: Float32Array;
+    avgNdvi: number;
+    minNdvi: number;
+    maxNdvi: number;
+  } {
+    const ndviValues = new Float32Array(nirBand.length);
+    let ndviSum = 0;
+    let minNdvi = Infinity;
+    let maxNdvi = -Infinity;
+
+    for (let i = 0; i < nirBand.length; i++) {
+      const nir = nirBand[i];
+      const r = rBand[i];
+      const ndvi = (nir - r) / (nir + r + 0.0001);
+
+      ndviValues[i] = ndvi;
+      ndviSum += ndvi;
+      minNdvi = Math.min(minNdvi, ndvi);
+      maxNdvi = Math.max(maxNdvi, ndvi);
+    }
+
+    const avgNdvi = ndviSum / nirBand.length;
+
+    return { ndviValues, avgNdvi, minNdvi, maxNdvi };
+  }
+
+  /**
+   * Calculate thermal indices for temperature analysis
+   * Single-pass calculation of multiple thermal metrics
+   */
+  calculateThermalIndices(
+    thermalBand: number[]
+  ): {
+    temperatures: Float32Array;
+    avgTemp: number;
+    minTemp: number;
+    maxTemp: number;
+    tempRange: number;
+    variance: number;
+  } {
+    const temperatures = new Float32Array(thermalBand.length);
+    let tempSum = 0;
+    let minTemp = Infinity;
+    let maxTemp = -Infinity;
+
+    // First pass: calculate min, max, sum
+    for (let i = 0; i < thermalBand.length; i++) {
+      const temp = thermalBand[i];
+      temperatures[i] = temp;
+      tempSum += temp;
+      minTemp = Math.min(minTemp, temp);
+      maxTemp = Math.max(maxTemp, temp);
+    }
+
+    const avgTemp = tempSum / thermalBand.length;
+    const tempRange = maxTemp - minTemp;
+
+    // Second pass: calculate variance
+    let sumSquaredDiff = 0;
+    for (let i = 0; i < thermalBand.length; i++) {
+      const diff = thermalBand[i] - avgTemp;
+      sumSquaredDiff += diff * diff;
+    }
+    const variance = sumSquaredDiff / thermalBand.length;
+
+    return { temperatures, avgTemp, minTemp, maxTemp, tempRange, variance };
+  }
+
+  /**
+   * Calculate NDBI (Normalized Difference Built-up Index)
+   * Identifies urban/built-up areas
+   */
+  calculateNDBI(
+    swirBand: number[],
+    nirBand: number[]
+  ): {
+    ndbiValues: Float32Array;
+    avgNdbi: number;
+  } {
+    const ndbiValues = new Float32Array(swirBand.length);
+    let ndbiSum = 0;
+
+    for (let i = 0; i < swirBand.length; i++) {
+      const swir = swirBand[i];
+      const nir = nirBand[i];
+      const ndbi = (swir - nir) / (swir + nir + 0.0001);
+
+      ndbiValues[i] = ndbi;
+      ndbiSum += ndbi;
+    }
+
+    const avgNdbi = ndbiSum / swirBand.length;
+
+    return { ndbiValues, avgNdbi };
+  }
+
+  /**
+   * Calculate multiple spectral indices in batch
+   * Much faster than sequential calculation
+   */
+  calculateSpectralIndices(
+    bands: Record<string, number[]>
+  ): {
+    ndvi?: { values: Float32Array; avg: number };
+    ndbi?: { values: Float32Array; avg: number };
+    thermal?: { values: Float32Array; avg: number; range: number };
+    processingTimeMs: number;
+  } {
+    const startTime = Date.now();
+    const results: any = { processingTimeMs: 0 };
+
+    if (bands.NIR && bands.R) {
+      const ndvi = this.calculateNDVI(bands.NIR, bands.R);
+      results.ndvi = { values: ndvi.ndviValues, avg: ndvi.avgNdvi };
+    }
+
+    if (bands.SWIR && bands.NIR) {
+      const ndbi = this.calculateNDBI(bands.SWIR, bands.NIR);
+      results.ndbi = { values: ndbi.ndbiValues, avg: ndbi.avgNdbi };
+    }
+
+    if (bands.THERMAL) {
+      const thermal = this.calculateThermalIndices(bands.THERMAL);
+      results.thermal = {
+        values: thermal.temperatures,
+        avg: thermal.avgTemp,
+        range: thermal.tempRange
+      };
+    }
+
+    results.processingTimeMs = Date.now() - startTime;
+
+    return results;
+  }
+}
+
 export default {
   SpatialGrid,
   PriorityQueue,
@@ -493,5 +642,6 @@ export default {
   VectorizedThermalModel,
   OptimizedECC,
   OptimizedGradientCompressor,
-  VectorizedFormationControl
+  VectorizedFormationControl,
+  VectorizedImageAnalyzer
 };
