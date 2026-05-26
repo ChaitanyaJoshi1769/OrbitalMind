@@ -98,3 +98,26 @@ export type {
   IncidentSeverity,
   IncidentStatus,
 } from './incident-response';
+
+export { default as RuleManagementAPI } from './rule-management-api';
+export type {
+  RuleType,
+  RuleVersion,
+  ManagedRule,
+  RuleTemplate,
+} from './rule-management-api';
+
+export { default as AlertCorrelationEngine } from './alert-correlation-engine';
+export type {
+  CorrelationAlert,
+  CorrelationPattern,
+  ServiceDependency,
+  MetricCorrelation,
+} from './alert-correlation-engine';
+
+export { default as PredictiveSLADetector } from './predictive-sla-detection';
+export type {
+  MetricDataPoint,
+  TrendAnalysis,
+  SLAViolationPrediction,
+} from './predictive-sla-detection';
