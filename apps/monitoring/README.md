@@ -335,6 +335,114 @@ const stats = incidentManager.getStatistics();
 console.log(`Avg resolution time: ${stats.avgResolutionTime.toFixed(1)} minutes`);
 ```
 
+### 10. **NEW (Phase 4 Enhancements):** Dynamic Rule Management
+
+```typescript
+import { RuleManagementAPI } from '@orbitalmind/monitoring';
+
+const ruleAPI = new RuleManagementAPI();
+
+// Create rule from template
+const rule = ruleAPI.createRuleFromTemplate(
+  'template-escalation-default',
+  'Custom Escalation',
+  { severity: 'critical', serviceName: 'space-traffic' },
+  'admin@orbitalmind.io'
+);
+
+// Update rule (creates new version)
+ruleAPI.updateRule(
+  rule.id,
+  { delayMinutes: 10 },
+  'Increased delay to 10 minutes',
+  'admin@orbitalmind.io'
+);
+
+// Test rule with sample data
+ruleAPI.testRule(rule.id, [
+  {
+    name: 'Critical alert',
+    input: { severity: 'critical' },
+    expectedOutput: { matched: true }
+  }
+]);
+
+// Deploy to production
+ruleAPI.deployRule(rule.id, 2, 'deployer@orbitalmind.io');
+
+// List all rules by type
+const escalationRules = ruleAPI.listRules('escalation');
+console.log(`Deployed escalation rules: ${escalationRules.length}`);
+```
+
+### 11. **NEW (Phase 4 Enhancements):** Alert Correlation & Pattern Detection
+
+```typescript
+import { AlertCorrelationEngine } from '@orbitalmind/monitoring';
+
+const correlationEngine = new AlertCorrelationEngine();
+
+// Add alerts for correlation analysis
+correlationEngine.addAlert({
+  alertId: 'ALERT-001',
+  serviceName: 'space-traffic',
+  metricName: 'avgResponseTime',
+  severity: 'critical',
+  message: 'High response time detected',
+  timestamp: Date.now(),
+  value: 150,
+  threshold: 50
+});
+
+// Automatically detect correlated alerts and cascade patterns
+const patterns = correlationEngine.getAllPatterns();
+console.log(`Detected patterns: ${patterns.length}`);
+
+// Analyze impact of a single alert
+const impact = correlationEngine.analyzeAlertImpact('ALERT-001');
+console.log(`Affected services: ${impact.directlyAffected.join(', ')}`);
+
+// Predict cascade failures
+const cascades = correlationEngine.predictCascadeFailures('space-traffic');
+console.log(`Potential cascades: ${cascades.affectedServices.length}`);
+
+// Get service dependency graph
+const graph = correlationEngine.getDependencyGraph();
+```
+
+### 12. **NEW (Phase 4 Enhancements):** Predictive SLA Violation Detection
+
+```typescript
+import { PredictiveSLADetector } from '@orbitalmind/monitoring';
+
+const detector = new PredictiveSLADetector();
+
+// Set SLA targets
+detector.setSLATarget('blockchain', 'queryTime', 10, 2);
+
+// Record metric values
+for (let i = 0; i < 20; i++) {
+  detector.recordMetric('blockchain', 'queryTime', 8 + i * 0.3);
+}
+
+// Get trend analysis
+const trend = detector.analyzeTrend('blockchain', 'queryTime');
+console.log(`Trend: ${trend?.trendDirection}, Rate: ${trend?.changeRate}%/hour`);
+
+// Predict SLA violations
+const prediction = detector.predictSLAViolation('blockchain', 'queryTime');
+console.log(`Violation probability: ${(prediction?.violationProbability * 100).toFixed(1)}%`);
+console.log(`Recommended actions: ${prediction?.recommendedActions.join(', ')}`);
+
+// Get high-risk predictions
+const atRisk = detector.getHighRiskPredictions(0.5);
+console.log(`Metrics at risk: ${atRisk.length}`);
+
+// Detect anomalies
+const anomalies = detector.detectAnomalies();
+anomalies.forEach((a) => console.log(a.message));
+```
+
 ## Architecture
 
 ### OptimizationMonitor
@@ -437,6 +545,39 @@ Automatic incident creation and lifecycle management:
 - MTTR calculation and resolution time metrics
 
 **File:** `src/incident-response.ts`
+
+### **NEW (Phase 4 Enhancement):** Rule Management API
+Dynamic management of escalation, aggregation, and incident rules:
+- Rule templates for quick creation from standard patterns
+- Rule versioning with full deployment history and rollback support
+- Test framework for rules with parameterized test data
+- Import/export for rule sharing and backup
+- Enable/disable toggles for runtime rule control
+- Statistics tracking by type and deployment status
+
+**File:** `src/rule-management-api.ts`
+
+### **NEW (Phase 4 Enhancement):** Alert Correlation Engine
+Groups related alerts across services and detects patterns:
+- Metric-based correlation detection using known relationships
+- Service dependency analysis with cascade failure prediction
+- Temporal analysis to find related alerts within time windows
+- Service dependency graph visualization
+- Automatic cascade pattern detection
+- Alert impact analysis for incident severity estimation
+
+**File:** `src/alert-correlation-engine.ts`
+
+### **NEW (Phase 4 Enhancement):** Predictive SLA Violation Detection
+Uses trend analysis and forecasting to predict SLA violations:
+- Trend analysis using linear regression (increasing, decreasing, stable)
+- SLA violation probability forecasting
+- Anomaly detection using statistical methods
+- Intelligent recommendations based on predictions
+- Forecast visualization data generation
+- Per-metric trend tracking and change rate calculations
+
+**File:** `src/predictive-sla-detection.ts`
 
 ## Monitoring Thresholds
 
