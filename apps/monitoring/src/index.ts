@@ -83,3 +83,18 @@ export type {
   AggregationRule,
   AggregationStats,
 } from './alert-aggregation';
+
+export { default as AlertEscalationManager } from './alert-escalation';
+export type {
+  EscalationPolicy,
+  AlertEscalationState,
+  EscalationLevel,
+} from './alert-escalation';
+
+export { default as IncidentResponseManager } from './incident-response';
+export type {
+  IncidentTicket,
+  IncidentCreationRule,
+  IncidentSeverity,
+  IncidentStatus,
+} from './incident-response';
