@@ -788,11 +788,150 @@ response.send(dashboardHTML);
   - [PHASE_4_COMPLETION.md](../../docs/PHASE_4_COMPLETION.md) - Feature overview and integration patterns
   - Updated [PRODUCTION_DEPLOYMENT_GUIDE.md](../../docs/PRODUCTION_DEPLOYMENT_GUIDE.md) - Escalation and incident configuration
 
-### Phase 5: Planned Enhancements
-- Custom rule management API
-- Alert correlation engine
-- Predictive SLA violation detection
-- Advanced metrics and analytics dashboards
+### Phase 4: Enhancements - Rule Management, Correlation, Prediction
+- **Completion Status:** ✅ Complete
+- **New Components:** Rule management API, alert correlation engine, predictive SLA detection
+- **Documentation:** [PHASE_4_ENHANCEMENTS.md](../../docs/PHASE_4_ENHANCEMENTS.md)
+
+### Phase 5: Intelligence - ML-Powered Automation & Self-Healing
+- **Completion Status:** ✅ Complete
+- **New Components:** ML anomaly detection, root cause analysis, automated remediation, policy engine
+- **Documentation:** [PHASE_5_INTELLIGENCE.md](../../docs/PHASE_5_INTELLIGENCE.md)
+- **Key Features:**
+  - Machine learning-based anomaly detection with 4 anomaly types
+  - Intelligent root cause analysis with 6 known cause library
+  - Automated remediation with 9 action types
+  - Dynamic policy engine with flexible conditions and evaluation strategies
+
+### 13. ML-Powered Anomaly Detection
+
+```typescript
+import { MLAnomalyDetector } from '@orbitalmind/monitoring';
+
+const detector = new MLAnomalyDetector();
+
+// Add training data
+const dataPoints = Array.from({ length: 150 }, (_, i) => ({
+  timestamp: Date.now() - (150 - i) * 60000,
+  value: 50 + Math.sin((i * Math.PI) / 30) * 10 + Math.random() * 2,
+}));
+
+detector.addTrainingData('blockchain', 'queryTime', dataPoints);
+
+// Detect anomalies in real-time
+const anomaly = detector.detectAnomalies('blockchain', 'queryTime', 350);
+if (anomaly) {
+  console.log(`Anomaly detected: ${anomaly.anomalyType} (score: ${anomaly.anomalyScore})`);
+  console.log(`Recommendation: ${anomaly.recommendation}`);
+}
+
+// Predict future anomalies
+const prediction = detector.predictAnomalies('blockchain', 'queryTime', 60);
+if (prediction?.anomalyProbability > 0.7) {
+  console.log('High probability of anomaly in next hour');
+}
+```
+
+### 14. Root Cause Analysis
+
+```typescript
+import { RootCauseAnalysisEngine } from '@orbitalmind/monitoring';
+
+const rca = new RootCauseAnalysisEngine();
+
+// Analyze incident root cause
+const analysis = rca.analyzeRootCauses(
+  'incident-001',
+  ['space-traffic', 'orbital-networking'],
+  ['Error spike detected', 'High latency'],
+  { cpuUsage: 92, errorRate: 15 },
+  [{ service1: 'space-traffic', service2: 'orbital-networking', strength: 0.9 }]
+);
+
+console.log(`Most likely cause: ${analysis.mostLikelyCause?.description}`);
+console.log(`Confidence: ${(analysis.analysisConfidence * 100).toFixed(0)}%`);
+console.log(`Actions: ${analysis.suggestedActions.join('\n')}`);
+```
+
+### 15. Automated Remediation
+
+```typescript
+import { AutomatedRemediationEngine } from '@orbitalmind/monitoring';
+
+const remediation = new AutomatedRemediationEngine();
+
+// Execute automatic action
+const action = {
+  actionId: 'scale-001',
+  serviceName: 'inference-runtime',
+  actionType: 'scale-up',
+  priority: 'high',
+  parameters: { scalePercentage: 25, maxInstances: 10 },
+  expectedOutcome: 'Service scaled up',
+  maxRetries: 3,
+  retryDelayMs: 10000,
+};
+
+const execution = await remediation.executeAction(action, true);
+console.log(`Remediation: ${execution.status} - ${execution.output}`);
+
+// Track success rate
+const rate = remediation.getSuccessRate('scale-001');
+console.log(`Success rate: ${(rate * 100).toFixed(0)}%`);
+```
+
+### 16. Dynamic Policy Engine
+
+```typescript
+import { PolicyEngine } from '@orbitalmind/monitoring';
+
+const policies = new PolicyEngine();
+
+// Evaluate against policies
+const context = {
+  serviceName: 'inference-runtime',
+  metrics: { cpuUsage: 92 },
+  symptoms: ['High latency detected'],
+  events: [],
+  timestamp: Date.now(),
+};
+
+const result = policies.evaluatePolicy('high-cpu-policy', context);
+
+if (result.matched) {
+  console.log(`Policy matched with score: ${(result.matchScore * 100).toFixed(0)}%`);
+  console.log(`Suggested actions: ${result.suggestedActions.length}`);
+}
+
+// Create custom policy
+policies.createPolicy({
+  policyId: 'custom-db-policy',
+  name: 'Database Performance Policy',
+  description: 'Alert on slow database queries',
+  enabled: true,
+  priority: 80,
+  scope: { serviceName: 'blockchain' },
+  conditions: [{
+    type: 'metric',
+    name: 'queryTime',
+    operator: '>',
+    threshold: 5000,
+  }],
+  actions: [{
+    type: 'alert',
+    name: 'db-alert',
+    priority: 'high',
+    parameters: { severity: 'warning', message: 'Slow query detected' },
+  }],
+  evaluationStrategy: 'all-match',
+  cooldownMs: 300000,
+  maxExecutionsPerWindow: 5,
+  timeWindowMs: 3600000,
+  createdAt: Date.now(),
+  updatedAt: Date.now(),
+  version: 1,
+});
+```
 
 ## Production Checklist
 
@@ -817,6 +956,26 @@ response.send(dashboardHTML);
 - [ ] Test escalation workflows end-to-end
 - [ ] Set up incident commander rotation
 - [ ] Create incident response runbooks
+
+### Phase 4: Rule Management, Correlation & Prediction
+- [ ] Configure rule templates for your operational procedures
+- [ ] Test rule creation and deployment workflows
+- [ ] Validate metric correlations against your baseline
+- [ ] Configure SLA targets for all 12 services
+- [ ] Review and adjust predictive thresholds
+- [ ] Set up correlation-based incident detection
+- [ ] Monitor prediction accuracy and adjust models
+
+### Phase 5: ML Intelligence & Automation
+- [ ] Train ML models with 1-2 weeks of historical data
+- [ ] Validate anomaly detection accuracy on known incidents
+- [ ] Configure anomaly thresholds for each service
+- [ ] Set up approved remediation actions
+- [ ] Test automated remediation in staging first
+- [ ] Configure policy cooldowns to prevent spam
+- [ ] Enable policy notifications initially
+- [ ] Monitor policy match rates and execution counts
+- [ ] Gradually reduce approval requirements as confidence increases
 
 ### Operations
 - [ ] Create runbooks for common alerts
