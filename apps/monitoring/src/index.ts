@@ -121,3 +121,43 @@ export type {
   TrendAnalysis,
   SLAViolationPrediction,
 } from './predictive-sla-detection';
+
+export { default as AdvancedAnalyticsDashboard } from './advanced-analytics-dashboard';
+export type {
+  DashboardMetric,
+  DashboardAlert,
+  ServiceHealthCard,
+  RealtimeEvent,
+  PerformanceTrend,
+} from './advanced-analytics-dashboard';
+
+export { default as MLAnomalyDetector } from './ml-anomaly-detection';
+export type {
+  TrainingDataPoint,
+  AnomalyModel,
+  DetectedAnomaly,
+  AnomalyPrediction,
+} from './ml-anomaly-detection';
+
+export { default as RootCauseAnalysisEngine } from './root-cause-analysis';
+export type {
+  RootCauseHypothesis,
+  RootCauseAnalysis,
+  ServiceComponent,
+} from './root-cause-analysis';
+
+export { default as AutomatedRemediationEngine } from './automated-remediation';
+export type {
+  RemediationAction,
+  RemediationExecution,
+  RemediationPolicy,
+} from './automated-remediation';
+
+export { default as PolicyEngine } from './policy-engine';
+export type {
+  PolicyCondition,
+  PolicyAction,
+  Policy,
+  EvaluationContext,
+  PolicyEvaluationResult,
+} from './policy-engine';
